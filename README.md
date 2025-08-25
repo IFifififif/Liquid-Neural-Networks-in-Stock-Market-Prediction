@@ -23,6 +23,8 @@ The data for this project is retrieved from Yahoo Finance, focusing on the follo
 
 Features included are Open, High, Low, Close, Adjusted Close, and Volume. Technical indicators such as MACD, RSI, Bollinger Bands, and others are calculated to enhance the dataset.
 
+You can also analyze custom data by supplying a local CSV file. Send a `csvPath` value in the JSON payload to the `/predict` endpoint, and the application will load the dataset from that path instead of downloading it from Yahoo Finance.
+
 ## Setup and Installation
 
 To run this project on your local machine, follow these steps:

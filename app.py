@@ -251,14 +251,22 @@ def create_dataset(data, target, look_back=1):
 
 @app.route('/predict', methods=["GET", "POST"])
 def predict():
-  data = request.get_json()
-  start_date = data["startDate"]
-  end_date = data["endDate"]
-  stock_name = data["stockName"]
+  payload = request.get_json()
+  start_date = payload["startDate"]
+  end_date = payload["endDate"]
+  stock_name = payload["stockName"]
+  csv_path = payload.get("csvPath")
   print(f"start date {start_date}, end date {end_date} stock name {stock_name}")
   print(f"start date {type(start_date)}, end date {type(end_date)} stock name {type(stock_name)}")
-  yf.pdr_override()
-  data = pdr.get_data_yahoo(stock_name, start=start_date, end=end_date)
+
+  if csv_path:
+    data = pd.read_csv(csv_path, index_col='Date', parse_dates=True)
+    if start_date and end_date:
+      data = data.loc[start_date:end_date]
+  else:
+    yf.pdr_override()
+    data = pdr.get_data_yahoo(stock_name, start=start_date, end=end_date)
+
   last_row = data.iloc[-1]
 
   open_price = last_row['Open']
